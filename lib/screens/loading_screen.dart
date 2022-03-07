@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather/weather.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +19,9 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   var latitude;
   var longtitude;
+  WeatherFactory weatherFactory =
+      WeatherFactory(apiKey, language: Language.ENGLISH);
+
   @override
   void initState() {
     super.initState();
@@ -29,38 +33,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await location.getCurrentLocation();
     latitude = location.latitude;
     longtitude = location.longitude;
-    getData();
+    weatherData();
   }
 
-  void getData() async {
-    var url = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longtitude&appid=$apiKey');
-    http.Response response = await http.get(url);
-    if (response.statusCode == 200) {
-      String jsonData = response.body;
-      var decodedData = jsonDecode(jsonData);
-
-      var condition = decodedData["weather"][0]["id"];
-      var cityName = decodedData["name"];
-      var temperature = decodedData["main"]["temp"];
-      var weatherDescription = decodedData["weather"][0]["description"];
-
-      print(condition);
-      print(cityName);
-      print(temperature);
-      print(weatherDescription);
-    } else {
-      print(response.statusCode);
-    }
+  void weatherData() async {
+    Weather weather =
+        await weatherFactory.currentWeatherByLocation(latitude, longtitude);
+    print(weather.areaName);
   }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
       body: Center(
         child: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            weatherData();
+          },
           child: const Text("Get Location"),
         ),
       ),

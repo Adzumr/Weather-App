@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 
@@ -14,60 +16,88 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     Weather weatherResult = widget.locationWeather;
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('images/location_background.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.8), BlendMode.dstATop),
-          ),
-        ),
-        constraints: const BoxConstraints.expand(),
-        child: SafeArea(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(weatherResult.areaName.toString()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.near_me,
-                      size: 50.0,
+              const TextField(
+                autofocus: false,
+                keyboardType: TextInputType.streetAddress,
+                toolbarOptions: ToolbarOptions(
+                  selectAll: true,
+                  copy: true,
+                  cut: true,
+                  paste: true,
+                ),
+                showCursor: true,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                    ),
+                    hintText: "Search",
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+              ),
+              Column(
+                children: [
+                  Text(
+                    weatherResult.areaName.toString(),
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.location_city,
-                      size: 50.0,
+                  const SizedBox(height: 10),
+                  Text(
+                    DateTime.now().minute.toString(),
+                    style: const TextStyle(
+                      fontSize: 20,
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: const [
-                    Text(
-                      '32°',
-                    ),
-                    Text(
-                      '☀️',
-                    ),
-                  ],
+              const Text(
+                "4",
+                style: TextStyle(
+                  fontSize: 120,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: Text(
-                  "It's 🍦 time in San Francisco!",
-                  textAlign: TextAlign.right,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(weatherResult.weatherIcon.toString()),
+                  Text(
+                    weatherResult.weatherDescription.toString(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                weatherResult.country.toString(),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

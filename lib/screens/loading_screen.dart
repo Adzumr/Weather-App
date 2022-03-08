@@ -30,23 +30,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
     weatherFactory = WeatherFactory(_apiKey, language: Language.ENGLISH);
   }
 
-  Location location = Location();
   void getLocation() async {
+    Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longtitude = location.longitude;
-    weatherData();
-  }
-
-  void weatherData() async {
     Weather weather = await weatherFactory.currentWeatherByLocation(
-        latitude ?? 25.0, longtitude ?? 25.0);
+        location.latitude, location.longitude);
 
-    cityName = weather.areaName;
-    country = weather.country;
-    temperature = weather.temperature;
+    setState(() {
+      cityName = weather.areaName ?? 'Reolad';
+      country = weather.country ?? 'Reload';
+      temperature = weather.temperature;
+    });
     print(weather);
+    // weatherData();
   }
+
+  // void weatherData() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +55,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
           title: Text(country ?? "Network Error"),
           subtitle: Text(cityName ?? "Network Error"),
           trailing: Text(temperature.toString()),
+          leading: TextButton(
+            child: const Text("Reload"),
+            onPressed: () => getLocation(),
+          ),
         ),
       ),
     );

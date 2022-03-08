@@ -30,7 +30,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await location.getCurrentLocation();
     latitude = location.latitude;
     longtitude = location.longitude;
-    print(latitude);
     weatherData();
   }
 

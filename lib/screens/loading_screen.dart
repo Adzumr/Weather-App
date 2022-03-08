@@ -7,7 +7,7 @@ import 'package:weather/weather.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:http/http.dart' as http;
 
-const apiKey = 'ccc00165de8167fbef1e32dc45387785';
+const _apiKey = 'ccc00165de8167fbef1e32dc45387785';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -17,15 +17,17 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  var latitude;
-  var longtitude;
-  WeatherFactory weatherFactory =
-      WeatherFactory(apiKey, language: Language.ENGLISH);
+  late WeatherFactory weatherFactory;
+  double? latitude, longtitude;
+  var cityName;
+  var country;
+  var temperature;
 
   @override
   void initState() {
     super.initState();
     getLocation();
+    weatherFactory = WeatherFactory(_apiKey, language: Language.ENGLISH);
   }
 
   Location location = Location();
@@ -37,20 +39,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void weatherData() async {
-    Weather weather =
-        await weatherFactory.currentWeatherByLocation(latitude, longtitude);
-    print(weather.areaName);
+    Weather weather = await weatherFactory.currentWeatherByLocation(
+        latitude ?? 25.0, longtitude ?? 25.0);
+
+    cityName = weather.areaName;
+    country = weather.country;
+    temperature = weather.temperature;
+    print(weather);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: TextButton(
-          onPressed: () {
-            weatherData();
-          },
-          child: const Text("Get Location"),
+        child: ListTile(
+          title: Text(country ?? "Network Error"),
+          subtitle: Text(cityName ?? "Network Error"),
+          trailing: Text(temperature.toString()),
         ),
       ),
     );

@@ -16,6 +16,17 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     Weather weatherResult = widget.locationWeather;
+    var temperature;
+    try {
+      String tempString = weatherResult.temperature.toString();
+      if (tempString.length >= 3) {
+        tempString = tempString.substring(0, tempString.length - 7);
+        temperature = tempString;
+        print(tempString);
+      }
+    } catch (e) {
+      print(e);
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -72,9 +83,9 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              const Text(
-                "4",
-                style: TextStyle(
+              Text(
+                "$temperature°",
+                style: const TextStyle(
                   fontSize: 120,
                   fontWeight: FontWeight.w700,
                 ),

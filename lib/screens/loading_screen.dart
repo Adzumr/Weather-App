@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
-import 'package:http/http.dart' as http;
 
 const _apiKey = 'ccc00165de8167fbef1e32dc45387785';
 

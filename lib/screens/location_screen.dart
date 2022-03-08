@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather/weather.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  final Weather locationWeather;
+
+  const LocationScreen({required this.locationWeather});
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -10,6 +13,7 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
+    Weather weatherResult = widget.locationWeather;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -26,6 +30,7 @@ class _LocationScreenState extends State<LocationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Text(weatherResult.areaName.toString()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

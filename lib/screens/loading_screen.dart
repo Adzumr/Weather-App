@@ -1,9 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/weather.dart';
+import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,47 +15,45 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late WeatherFactory weatherFactory;
-  double? latitude, longtitude;
-  var cityName;
-  var country;
-  var temperature;
+  WeatherFactory weatherFactory =
+      WeatherFactory(_apiKey, language: Language.ENGLISH);
+  var latitude, longtitude;
 
   @override
   void initState() {
     super.initState();
     getLocation();
-    weatherFactory = WeatherFactory(_apiKey, language: Language.ENGLISH);
   }
 
   void getLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
-    Weather weather = await weatherFactory.currentWeatherByLocation(
-        location.latitude, location.longitude);
-
-    setState(() {
-      cityName = weather.areaName ?? 'Reolad';
-      country = weather.country ?? 'Reload';
-      temperature = weather.temperature;
-    });
-    print(weather);
-    // weatherData();
+    latitude = location.latitude;
+    longtitude = location.longitude;
+    print(latitude);
+    weatherData();
   }
 
-  // void weatherData() async {}
+  void weatherData() async {
+    Weather weather =
+        await weatherFactory.currentWeatherByLocation(latitude!, longtitude!);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(locationWeather: weather);
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ListTile(
-          title: Text(country ?? "Network Error"),
-          subtitle: Text(cityName ?? "Network Error"),
-          trailing: Text(temperature.toString()),
-          leading: TextButton(
-            child: const Text("Reload"),
-            onPressed: () => getLocation(),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(20),
+          child: const CircularProgressIndicator(
+            color: Colors.green,
+            backgroundColor: Colors.white,
           ),
         ),
       ),

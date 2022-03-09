@@ -29,22 +29,24 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(Weather weatherData) {
-    condition = weatherData.weatherConditionCode;
-    cityName = weatherData.areaName;
-    country = weatherData.country;
-    description = weatherData.weatherDescription;
-    weatherIcon = weatherModel.getWeatherIcon(condition);
-    try {
-      dynamic extractedTemp = weatherData.temperature.toString();
-      var temp = extractedTemp.replaceAll(new RegExp(r'[^0-9]'), '');
+    setState(() {
+      condition = weatherData.weatherConditionCode;
+      cityName = weatherData.areaName;
+      country = weatherData.country;
+      description = weatherData.weatherDescription;
+      weatherIcon = weatherModel.getWeatherIcon(condition);
+      try {
+        dynamic extractedTemp = weatherData.temperature.toString();
+        var temp = extractedTemp.replaceAll(new RegExp(r'[^0-9]'), '');
 
-      if (temp.length >= 1) {
-        temp = temp.substring(0, temp.length - 1);
-        temperature = int.parse(temp ?? "0");
+        if (temp.length >= 1) {
+          temp = temp.substring(0, temp.length - 1);
+          temperature = int.parse(temp ?? "0");
+        }
+      } catch (e) {
+        log(e.toString());
       }
-    } catch (e) {
-      log(e.toString());
-    }
+    });
   }
 
   @override
@@ -133,7 +135,9 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  updateUI(widget.locationWeather);
+                },
                 child: const Icon(
                   Icons.replay,
                   size: 30,

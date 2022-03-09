@@ -15,28 +15,40 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weatherModel = WeatherModel();
+  dynamic weatherIcon;
+  dynamic condition;
+  dynamic temperature;
+  dynamic cityName;
+  dynamic country;
+  dynamic description;
   @override
-  Widget build(BuildContext context) {
-    Weather weatherResult = widget.locationWeather;
-    dynamic condition = weatherResult.weatherConditionCode;
-    print(condition);
-    dynamic temperature;
-    dynamic weatherIcon = weatherModel.getWeatherIcon(condition);
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateUI(widget.locationWeather);
+  }
 
+  void updateUI(Weather weatherData) {
+    condition = weatherData.weatherConditionCode;
+    cityName = weatherData.areaName;
+    country = weatherData.country;
+    description = weatherData.weatherDescription;
+    weatherIcon = weatherModel.getWeatherIcon(condition);
     try {
-      dynamic extractedTemp = weatherResult.temperature.toString();
+      dynamic extractedTemp = weatherData.temperature.toString();
       var temp = extractedTemp.replaceAll(new RegExp(r'[^0-9]'), '');
 
       if (temp.length >= 1) {
         temp = temp.substring(0, temp.length - 1);
-
         temperature = int.parse(temp ?? "0");
-        print(temperature);
       }
     } catch (e) {
       log(e.toString());
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -77,9 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Column(
                 children: [
                   Text(
-                    weatherResult.areaName.toString() +
-                        "," +
-                        weatherResult.country.toString(),
+                    cityName,
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -105,7 +115,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    weatherIcon,
+                    description,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -113,7 +123,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   Text(
-                    weatherResult.weatherDescription.toString(),
+                    weatherIcon,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

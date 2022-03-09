@@ -14,7 +14,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   WeatherFactory weatherFactory =
-      WeatherFactory(_apiKey, language: Language.ENGLISH);
+      WeatherFactory(_apiKey, language: Language.ENGLISH,);
 
   @override
   void initState() {

@@ -15,7 +15,6 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   WeatherFactory weatherFactory =
       WeatherFactory(_apiKey, language: Language.ENGLISH);
-  var latitude, longtitude;
 
   @override
   void initState() {
@@ -26,18 +25,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longtitude = location.longitude;
-    weatherData();
-  }
 
-  void weatherData() async {
-    Weather weather =
-        await weatherFactory.currentWeatherByLocation(latitude!, longtitude!);
+    Weather weather = await weatherFactory.currentWeatherByLocation(
+        location.latitude, location.longitude);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(locationWeather: weather);
     }));
+    // weatherData();
   }
 
   @override

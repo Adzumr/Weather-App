@@ -16,16 +16,20 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     Weather weatherResult = widget.locationWeather;
-    var temperature;
+    dynamic temperature;
+
     try {
-      String tempString = weatherResult.temperature.toString();
-      if (tempString.length >= 3) {
-        tempString = tempString.substring(0, tempString.length - 7);
-        temperature = tempString;
-        print(tempString);
+      dynamic extractedTemp = weatherResult.temperature.toString();
+      var temp = extractedTemp.replaceAll(new RegExp(r'[^0-9]'), '');
+
+      if (temp.length >= 1) {
+        temp = temp.substring(0, temp.length - 1);
+
+        temperature = int.parse(temp ?? "0");
+        print(temperature);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
 
     return Scaffold(

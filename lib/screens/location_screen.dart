@@ -79,7 +79,9 @@ class _LocationScreenState extends State<LocationScreen> {
               Column(
                 children: [
                   Text(
-                    weatherResult.areaName.toString(),
+                    weatherResult.areaName.toString() +
+                        ", " +
+                        weatherResult.country.toString(),
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
-import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/services/weatherModel.dart';
 
@@ -80,7 +78,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: [
                   Text(
                     weatherResult.areaName.toString() +
-                        ", " +
+                        "," +
                         weatherResult.country.toString(),
                     style: const TextStyle(
                       fontSize: 30,
@@ -124,11 +122,11 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              Text(
-                weatherResult.country.toString(),
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+              TextButton(
+                onPressed: () {},
+                child: const Icon(
+                  Icons.replay,
+                  size: 30,
                 ),
               ),
             ],

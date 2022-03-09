@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
+import 'package:weather_app/services/weatherModel.dart';
 
 class LocationScreen extends StatefulWidget {
   final Weather locationWeather;
@@ -13,10 +16,14 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weatherModel = WeatherModel();
   @override
   Widget build(BuildContext context) {
     Weather weatherResult = widget.locationWeather;
+    dynamic condition = weatherResult.weatherConditionCode;
+    print(condition);
     dynamic temperature;
+    dynamic weatherIcon = weatherModel.getWeatherIcon(condition);
 
     try {
       dynamic extractedTemp = weatherResult.temperature.toString();
@@ -97,7 +104,14 @@ class _LocationScreenState extends State<LocationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text(weatherResult.weatherIcon.toString()),
+                  Text(
+                    weatherIcon,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   Text(
                     weatherResult.weatherDescription.toString(),
                     style: const TextStyle(

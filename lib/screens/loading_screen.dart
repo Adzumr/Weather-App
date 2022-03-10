@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/screens/location_screen.dart';
@@ -30,7 +32,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(locationWeather: weather);
-    }));
+    })).timeout(const Duration(
+      seconds: 15,
+    ));
   }
 
   @override

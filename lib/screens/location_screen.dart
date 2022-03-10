@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/services/weatherModel.dart';
 
@@ -23,13 +24,20 @@ class _LocationScreenState extends State<LocationScreen> {
   dynamic description;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     updateUI(widget.locationWeather);
   }
 
   void updateUI(Weather weatherData) {
     setState(() {
+      if (weatherData == true) {
+        condition = 0;
+        cityName = "";
+        country = "";
+        description = "";
+        weatherIcon = "";
+        return;
+      }
       condition = weatherData.weatherConditionCode;
       cityName = weatherData.areaName;
       country = weatherData.country;
@@ -37,7 +45,7 @@ class _LocationScreenState extends State<LocationScreen> {
       weatherIcon = weatherModel.getWeatherIcon(condition);
       try {
         dynamic extractedTemp = weatherData.temperature.toString();
-        var temp = extractedTemp.replaceAll(new RegExp(r'[^0-9]'), '');
+        var temp = extractedTemp.replaceAll(RegExp(r'[^0-9]'), '');
 
         if (temp.length >= 1) {
           temp = temp.substring(0, temp.length - 1);

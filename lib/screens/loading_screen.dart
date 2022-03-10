@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/screens/location_screen.dart';

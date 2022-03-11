@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/services/weatherModel.dart';

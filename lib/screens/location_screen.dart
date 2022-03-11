@@ -15,6 +15,8 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherFactory weatherFactory =
+      WeatherFactory('ccc00165de8167fbef1e32dc45387785');
   WeatherModel weatherModel = WeatherModel();
   dynamic weatherIcon;
   dynamic condition;
@@ -22,11 +24,47 @@ class _LocationScreenState extends State<LocationScreen> {
   dynamic cityName;
   dynamic country;
   dynamic description;
-  String? searchedterm;
+  dynamic searchCityName;
   @override
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
+  }
+
+  void searchedCity({required String resultName}) async {
+    Weather weather = await weatherFactory.currentWeatherByCityName(resultName);
+    setState(() {
+      if (WeatherFactory.STATUS_OK != 200) {
+        condition = 0;
+        cityName = "";
+        country = "";
+        description = "";
+        weatherIcon = "";
+      } else {
+        try {
+          condition = weather.weatherConditionCode;
+          cityName = weather.areaName;
+          country = weather.country;
+          description = weather.weatherDescription;
+          weatherIcon = weatherModel.getWeatherIcon(condition);
+          dynamic extractedTemp = weather.temperature.toString();
+          var temp = extractedTemp.replaceAll(RegExp(r'[^0-9]'), '');
+
+          if (temp.length >= 1) {
+            temp = temp.substring(0, temp.length - 1);
+            temperature = int.parse(temp ?? "0");
+          }
+        } catch (e) {
+          log(e.toString());
+          condition = 0;
+          cityName = "";
+          country = "";
+          description = "";
+          weatherIcon = "";
+          return;
+        }
+      }
+    });
   }
 
   void updateUI(Weather weatherData) {
@@ -70,7 +108,9 @@ class _LocationScreenState extends State<LocationScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               TextField(
-                onEditingComplete: () {},
+                onSubmitted: (value) {
+                  searchedCity(resultName: value);
+                },
                 autofocus: false,
                 keyboardType: TextInputType.streetAddress,
                 toolbarOptions: const ToolbarOptions(
@@ -92,7 +132,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         Radius.circular(15),
                       ),
                     ),
-                    hintText: "Search",
+                    hintText: "Search City",
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

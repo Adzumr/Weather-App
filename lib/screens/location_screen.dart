@@ -22,6 +22,7 @@ class _LocationScreenState extends State<LocationScreen> {
   dynamic cityName;
   dynamic country;
   dynamic description;
+  String? searchedterm;
   @override
   void initState() {
     super.initState();
@@ -68,22 +69,23 @@ class _LocationScreenState extends State<LocationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const TextField(
+              TextField(
+                onEditingComplete: () {},
                 autofocus: false,
                 keyboardType: TextInputType.streetAddress,
-                toolbarOptions: ToolbarOptions(
+                toolbarOptions: const ToolbarOptions(
                   selectAll: true,
                   copy: true,
                   cut: true,
                   paste: true,
                 ),
                 showCursor: true,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: Colors.white,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.all(

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/services/weatherModel.dart';
 
@@ -25,49 +27,45 @@ class _LocationScreenState extends State<LocationScreen> {
   dynamic country;
   dynamic description;
   dynamic searchCityName;
+  dynamic date;
   @override
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
   }
 
-  void searchedCity({required String resultName}) async {
+  Future searchedCity({required String resultName}) async {
     Weather weather = await weatherFactory.currentWeatherByCityName(resultName);
+    bool result = await InternetConnectionChecker().hasConnection;
+
+    if (result == true && weather.areaName != null) {}
     setState(() {
-      if (WeatherFactory.STATUS_OK != 200) {
+      if (weather.areaName != null) {
+        condition = weather.weatherConditionCode;
+        cityName = weather.areaName;
+        country = weather.country;
+        description = weather.weatherDescription;
+        weatherIcon = weatherModel.getWeatherIcon(condition);
+        date = weather.date;
+        dynamic extractedTemp = weather.temperature.toString();
+        var temp = extractedTemp.replaceAll(RegExp(r'[^0-9]'), '');
+
+        if (temp.length >= 1) {
+          temp = temp.substring(0, temp.length - 1);
+          temperature = int.parse(temp ?? "0");
+        }
+      } else {
         condition = 0;
         cityName = "";
         country = "";
         description = "";
         weatherIcon = "";
-      } else {
-        try {
-          condition = weather.weatherConditionCode;
-          cityName = weather.areaName;
-          country = weather.country;
-          description = weather.weatherDescription;
-          weatherIcon = weatherModel.getWeatherIcon(condition);
-          dynamic extractedTemp = weather.temperature.toString();
-          var temp = extractedTemp.replaceAll(RegExp(r'[^0-9]'), '');
-
-          if (temp.length >= 1) {
-            temp = temp.substring(0, temp.length - 1);
-            temperature = int.parse(temp ?? "0");
-          }
-        } catch (e) {
-          log(e.toString());
-          condition = 0;
-          cityName = "";
-          country = "";
-          description = "";
-          weatherIcon = "";
-          return;
-        }
+        date = DateTime.now();
       }
     });
   }
 
-  void updateUI(Weather weatherData) {
+  void updateUI(Weather weatherData) async {
     setState(() {
       if (weatherData == true) {
         condition = 0;
@@ -75,13 +73,16 @@ class _LocationScreenState extends State<LocationScreen> {
         country = "";
         description = "";
         weatherIcon = "";
+        date = DateTime.now().toString();
         return;
       }
       condition = weatherData.weatherConditionCode;
       cityName = weatherData.areaName;
       country = weatherData.country;
       description = weatherData.weatherDescription;
+      date = weatherData.date;
       weatherIcon = weatherModel.getWeatherIcon(condition);
+
       try {
         dynamic extractedTemp = weatherData.temperature.toString();
         var temp = extractedTemp.replaceAll(RegExp(r'[^0-9]'), '');
@@ -109,7 +110,10 @@ class _LocationScreenState extends State<LocationScreen> {
             children: <Widget>[
               TextField(
                 onSubmitted: (value) {
-                  searchedCity(resultName: value);
+                  setState(() {
+                    searchCityName = value;
+                    searchedCity(resultName: searchCityName);
+                  });
                 },
                 autofocus: false,
                 keyboardType: TextInputType.streetAddress,
@@ -149,7 +153,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    DateTime.now().minute.toString(),
+                    country,
                     style: const TextStyle(
                       fontSize: 20,
                     ),

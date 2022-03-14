@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/services/weatherModel.dart';
 
@@ -33,10 +32,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Future searchedCity({required String resultName}) async {
-    Weather weather = await weatherFactory.currentWeatherByCityName(resultName);
-    bool result = await InternetConnectionChecker().hasConnection;
-
-    if (result == true && weather.areaName != null) {}
+    Weather weather = await weatherFactory.currentWeatherByCityName(resultName); 
     setState(() {
       if (weather.areaName != null) {
         condition = weather.weatherConditionCode;

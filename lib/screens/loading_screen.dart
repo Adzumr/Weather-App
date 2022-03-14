@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
@@ -16,17 +16,18 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   WeatherFactory weatherFactory =
       WeatherFactory(_apiKey, language: Language.ENGLISH);
-  bool? connectionChecker;
+  bool? locationPermission;
+
   @override
   void initState() {
     super.initState();
-
     getLocation();
   }
 
   void getLocation() async {
-    connectionChecker = await InternetConnectionChecker().hasConnection;
-    if (connectionChecker == true) {
+    locationPermission =
+        await Permission.locationWhenInUse.serviceStatus.isEnabled;
+    if (locationPermission == true) {
       Location location = Location();
       await location.getCurrentLocation();
 
@@ -54,9 +55,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              connectionChecker == true
+              locationPermission == false
                   ? const Text(
-                      "No Internet Connection",
+                      "Permission Denied !!!",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.black,
@@ -70,14 +71,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   backgroundColor: Colors.white,
                 ),
               ),
-              connectionChecker == true
-                  ? TextButton(
-                      onPressed: () {
-                        getLocation();
-                      },
-                      child: const Text("Retry"),
-                    )
-                  : const Text("")
+              TextButton(
+                onPressed: () {
+                  getLocation();
+                },
+                child: locationPermission == false
+                    ? const Text("Retry")
+                    : const Text(""),
+              )
             ],
           ),
         ),

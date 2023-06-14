@@ -7,7 +7,8 @@ import 'package:weather_app/services/weatherModel.dart';
 class LocationScreen extends StatefulWidget {
   final Weather locationWeather;
 
-  const LocationScreen({required this.locationWeather});
+  const LocationScreen({Key? key, required this.locationWeather})
+      : super(key: key);
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -32,7 +33,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Future searchedCity({required String resultName}) async {
-    Weather weather = await weatherFactory.currentWeatherByCityName(resultName); 
+    Weather weather = await weatherFactory.currentWeatherByCityName(resultName);
     setState(() {
       if (weather.areaName != null) {
         condition = weather.weatherConditionCode;

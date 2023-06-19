@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:weather_forecast/screens/home_screen.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class WeatherForecastApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Weather Forecast',
       theme: ThemeData(

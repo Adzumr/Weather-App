@@ -40,14 +40,15 @@ class AboutScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       const AboutWidget(
                         title: "Topic",
-                        content: "Design and Implementation of a Weather",
+                        content:
+                            "DESIGN AND IMPLEMENTATION A WEATHER FORECASTING APPLICATION (CASE STUDY ABBA MAI MALARI AIRPORT GOMBE, GOMBE STATE)",
                       ),
                       const AboutWidget(
                         title: "Name",
-                        content: "Sabiu Isyaku",
+                        content: "SABIU ISHIYAKU",
                       ),
                       const AboutWidget(
-                        title: "Matric Number",
+                        title: "Matric",
                         content: "FUKD/SCI/19/COM/0301",
                       ),
                       const AboutWidget(
@@ -55,8 +56,12 @@ class AboutScreen extends StatelessWidget {
                         content: "Mr. O.S Dada",
                       ),
                       const AboutWidget(
-                        title: "School",
-                        content: "FEDERAL UNIVERSITY KASHERE",
+                        title: "Institution",
+                        content: "FUK (FEDERAL UNIVERSITY KASHERE) GOMBE STATE",
+                      ),
+                      const AboutWidget(
+                        title: "Contact",
+                        content: "07033643129",
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

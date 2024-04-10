@@ -1,8 +1,6 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_forecast/screens/about.dart';
-import 'package:weather_forecast/utils/app_colors.dart';
 import 'package:weather_forecast/utils/app_fonts.dart';
 import 'package:weather_forecast/utils/app_images.dart';
 import 'package:weather_forecast/utils/unit_converter.dart';
@@ -60,42 +58,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AnimSearchBar(
-                            autoFocus: false,
-                            rtl: false,
-                            width: screenSize.width * .75,
-                            textController: searchController,
-                            onSuffixTap: () {
-                              setState(() {
-                                searchController.clear();
-                              });
-                            },
-                            onSubmitted: (value) async {
-                              setState(() {
-                                isLoading = true;
-                              });
+                      AnimSearchBar(
+                        autoFocus: false,
+                        rtl: true,
+                        width: screenSize.width,
+                        textController: searchController,
+                        onSuffixTap: () {
+                          setState(() {
+                            searchController.clear();
+                          });
+                        },
+                        onSubmitted: (value) async {
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                              await weatherController.weatherByName(
-                                city: value,
-                              );
-                              setState(() {
-                                isLoading = false;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            color: AppColors.whiteColor,
-                            onPressed: () {
-                              Get.to(() => const AboutScreen());
-                            },
-                            icon: const Icon(
-                              Icons.settings,
-                            ),
-                          ),
-                        ],
+                          await weatherController.weatherByName(
+                            city: value,
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
                       ),
                       const SizedBox(height: 10),
                       Text(

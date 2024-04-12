@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_forecast/screens/home_screen.dart';
 
-void main() {
-  runApp(const WeatherForecastApp());
+void main() async {
+  runApp(
+    const WeatherForecastApp(),
+  );
+  sharedPreferences = await SharedPreferences.getInstance();
 }
+
+SharedPreferences? sharedPreferences;
 
 class WeatherForecastApp extends StatelessWidget {
   const WeatherForecastApp({super.key});

@@ -31,7 +31,7 @@ class WeatherController extends GetxController {
           )
           .timeout(
             const Duration(
-              seconds: 10,
+              seconds: 30,
             ),
           );
       if (response.statusCode == 200) {

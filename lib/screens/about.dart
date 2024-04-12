@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:weather_forecast/main.dart';
 import 'package:weather_forecast/utils/app_colors.dart';
 import 'package:weather_forecast/utils/app_fonts.dart';
 
-import '../utils/app_images.dart';
-import 'widgets/about_widget.dart';
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
 
+class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    enabled = sharedPreferences!.getBool("notification") ?? false;
+    super.initState();
+  }
+
+  bool? enabled;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,64 +28,73 @@ class AboutScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(width: 20),
-              Text(
-                "Project information",
-                textAlign: TextAlign.center,
-                style: AppFonts.bodyStyle.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.purpleBlue,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const BackButton(),
+                  Text(
+                    "Settings",
+                    textAlign: TextAlign.center,
+                    style: AppFonts.bodyStyle.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.purpleBlue,
+                    ),
+                  ),
+                  const Opacity(
+                    opacity: 0,
+                    child: BackButton(),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Image(
-                        image: AssetImage(AppImages.kashere),
-                        height: 200,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ListTile(
+                      title: Text(
+                        "Notification",
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      const SizedBox(height: 20),
-                      const AboutWidget(
-                        title: "Topic",
-                        content:
-                            "DESIGN AND IMPLEMENTATION A WEATHER FORECASTING APPLICATION (CASE STUDY ABBA MAI MALARI AIRPORT GOMBE, GOMBE STATE)",
-                      ),
-                      const AboutWidget(
-                        title: "Name",
-                        content: "SABIU ISHIYAKU",
-                      ),
-                      const AboutWidget(
-                        title: "Matric",
-                        content: "FUKD/SCI/19/COM/0301",
-                      ),
-                      const AboutWidget(
-                        title: "Project supervisor",
-                        content: "Mr. O.S Dada",
-                      ),
-                      const AboutWidget(
-                        title: "Institution",
-                        content: "FUK (FEDERAL UNIVERSITY KASHERE) GOMBE STATE",
-                      ),
-                      const AboutWidget(
-                        title: "Contact",
-                        content: "07033643129",
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.purpleBlue,
-                          foregroundColor: AppColors.whiteColor,
-                        ),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text("Close"),
-                      ),
-                    ],
+                      trailing: Switch.adaptive(
+                          value: enabled!,
+                          onChanged: (value) {
+                            setState(() {
+                              enabled = value;
+                              sharedPreferences!.setBool(
+                                "notification",
+                                value,
+                              );
+                            });
+                          })),
+                  ListTile(
+                    title: Text(
+                      "Policy",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    trailing: Icon(
+                      Icons.adaptive.arrow_forward,
+                    ),
                   ),
-                ),
-              )
+                  ListTile(
+                    title: Text(
+                      "Support",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    trailing: Icon(
+                      Icons.adaptive.arrow_forward,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      "Account",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    trailing: Icon(
+                      Icons.adaptive.arrow_forward,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

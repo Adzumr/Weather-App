@@ -1,13 +1,13 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_forecast/screens/about.dart';
+import 'package:weather_forecast/screens/views/about.dart';
 import 'package:weather_forecast/utils/app_fonts.dart';
 import 'package:weather_forecast/utils/app_images.dart';
 import 'package:weather_forecast/utils/unit_converter.dart';
 
-import '../controllers/weather_api.dart';
-import 'widgets/loading_widget.dart';
+import '../../controllers/weather_api.dart';
+import '../widgets/loading_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

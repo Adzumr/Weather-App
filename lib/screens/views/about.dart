@@ -51,48 +51,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ListTile(
-                      title: Text(
-                        "Notification",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      trailing: Switch.adaptive(
-                          value: enabled!,
-                          onChanged: (value) {
-                            setState(() {
-                              enabled = value;
-                              sharedPreferences!.setBool(
-                                "notification",
-                                value,
-                              );
-                            });
-                          })),
-                  ListTile(
                     title: Text(
-                      "Policy",
+                      "Notification",
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    trailing: Icon(
-                      Icons.adaptive.arrow_forward,
+                    trailing: Switch.adaptive(
+                      value: enabled!,
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            enabled = value;
+                            sharedPreferences!.setBool(
+                              "Notification",
+                              value,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "Support",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    trailing: Icon(
-                      Icons.adaptive.arrow_forward,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      "Account",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    trailing: Icon(
-                      Icons.adaptive.arrow_forward,
-                    ),
-                  ),
+                  // ListTile(
+                  //   title: Text(
+                  //     "Policy",
+                  //     style: Theme.of(context).textTheme.titleLarge,
+                  //   ),
+                  //   trailing: Icon(
+                  //     Icons.adaptive.arrow_forward,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text(
+                  //     "Support",
+                  //     style: Theme.of(context).textTheme.titleLarge,
+                  //   ),
+                  //   trailing: Icon(
+                  //     Icons.adaptive.arrow_forward,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text(
+                  //     "Account",
+                  //     style: Theme.of(context).textTheme.titleLarge,
+                  //   ),
+                  //   trailing: Icon(
+                  //     Icons.adaptive.arrow_forward,
+                  //   ),
+                  // ),
                 ],
               ),
             ],

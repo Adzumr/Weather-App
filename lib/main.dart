@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_forecast/screens/home_screen.dart';
+import 'package:weather_forecast/screens/views/home_screen.dart';
 
 void main() async {
   runApp(
